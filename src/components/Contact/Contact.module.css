@@ -1,0 +1,10 @@
+.contactContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.button {
+  margin-top: 10px;
+  align-self: center;
+}
