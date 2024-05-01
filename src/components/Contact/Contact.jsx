@@ -1,6 +1,6 @@
 import { TiUser, TiPhone } from "react-icons/ti";
 import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsOps";
+import { deleteContact } from "../../redux/contacts/operations";
 import css from "./Contact.module.css";
 
 const Contact = ({ name, number, id }) => {
