@@ -1,7 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import { useId } from "react";
 import { register } from "../../redux/auth/operations";
+import css from "./RegistrationForm.module.css";
 
 const RegisterUserSchema = Yup.object().shape({
   name: Yup.string()
@@ -22,6 +24,10 @@ const RegisterUserSchema = Yup.object().shape({
 const RegistrationForm = () => {
   const dispatch = useDispatch();
 
+  const nameId = useId();
+  const emailId = useId();
+  const passwordId = useId();
+
   return (
     <Formik
       initialValues={{ name: "", email: "", password: "" }}
@@ -31,43 +37,39 @@ const RegistrationForm = () => {
         resetForm();
       }}
     >
-      {({ isSubmitting }) => (
-        <Form>
-          <div>
-            <label htmlFor="name">Name:</label>
-            <Field
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-            />
-            <ErrorMessage name="name" component="div" />
-          </div>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <Field
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-            />
-            <ErrorMessage name="email" component="div" />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <Field
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-            />
-            <ErrorMessage name="password" component="div" />
-          </div>
-          <button type="submit" disabled={isSubmitting}>
-            Register
-          </button>
-        </Form>
-      )}
+      <Form>
+        <div>
+          <label htmlFor={nameId}>Name:</label>
+          <Field
+            type="text"
+            id={nameId}
+            name="name"
+            placeholder="Enter your name"
+          />
+          <ErrorMessage name="name" component="div" className={css.error} />
+        </div>
+        <div>
+          <label htmlFor={emailId}>Email:</label>
+          <Field
+            type="email"
+            id={emailId}
+            name="email"
+            placeholder="Enter your email"
+          />
+          <ErrorMessage name="email" component="div" className={css.error} />
+        </div>
+        <div>
+          <label htmlFor={passwordId}>Password:</label>
+          <Field
+            type="password"
+            id={passwordId}
+            name="password"
+            placeholder="Enter your password"
+          />
+          <ErrorMessage name="password" component="div" className={css.error} />
+        </div>
+        <button type="submit">Register</button>
+      </Form>
     </Formik>
   );
 };

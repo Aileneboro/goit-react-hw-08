@@ -1,7 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useId } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { login } from "../../redux/auth/operations";
+import css from "./LoginForm.module.css";
 
 const loginUserSchema = Yup.object().shape({
   email: Yup.string()
@@ -18,6 +20,9 @@ const loginUserSchema = Yup.object().shape({
 const LoginForm = () => {
   const dispatch = useDispatch();
 
+  const emailId = useId();
+  const passwordId = useId();
+
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -27,33 +32,29 @@ const LoginForm = () => {
         resetForm();
       }}
     >
-      {({ isSubmitting }) => (
-        <Form>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <Field
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-            />
-            <ErrorMessage name="email" component="div" />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <Field
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-            />
-            <ErrorMessage name="password" component="div" />
-          </div>
-          <button type="submit" disabled={isSubmitting}>
-            Log In
-          </button>
-        </Form>
-      )}
+      <Form>
+        <div>
+          <label htmlFor={emailId}>Email:</label>
+          <Field
+            type="email"
+            id={emailId}
+            name="email"
+            placeholder="Enter your email"
+          />
+          <ErrorMessage name="email" component="div" className={css.error} />
+        </div>
+        <div>
+          <label htmlFor={passwordId}>Password:</label>
+          <Field
+            type="password"
+            id={passwordId}
+            name="password"
+            placeholder="Enter your password"
+          />
+          <ErrorMessage name="password" component="div" className={css.error} />
+        </div>
+        <button type="submit">Log In</button>
+      </Form>
     </Formik>
   );
 };
