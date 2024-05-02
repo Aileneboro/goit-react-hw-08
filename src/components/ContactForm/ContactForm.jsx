@@ -31,7 +31,12 @@ const ContactForm = () => {
         <Form>
           <div>
             <label htmlFor="name">Name:</label>
-            <Field type="text" id="name" name="name" />
+            <Field
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+            />
             <ErrorMessage name="name" component="div" className={css.error} />
           </div>
           <div>
