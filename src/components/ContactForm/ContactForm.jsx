@@ -47,7 +47,12 @@ const ContactForm = () => {
           </div>
           <div>
             <label htmlFor={numberId}>Number:</label>
-            <Field type="text" id={numberId} name="number" />
+            <Field
+              type="text"
+              id={numberId}
+              name="number"
+              placeholder="Enter your number"
+            />
             <ErrorMessage name="number" component="div" className={css.error} />
           </div>
           <button type="submit">Add contact</button>

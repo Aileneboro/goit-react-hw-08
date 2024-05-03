@@ -12,9 +12,10 @@ const SearchBox = () => {
   };
 
   return (
-    <div>
+    <div className={css.searchForm}>
       <p className={css.findField}>Find contacts by name or number:</p>
       <input
+        className={css.searchInput}
         type="text"
         placeholder="type..."
         value={value}
