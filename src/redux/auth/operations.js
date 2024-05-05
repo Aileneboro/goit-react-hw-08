@@ -5,11 +5,11 @@ export const instance = axios.create({
   baseURL: "https://connections-api.herokuapp.com",
 });
 
-export const setToken = (token) => {
+export const setAuthHeader = (token) => {
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
-export const clearToken = () =>
+export const clearAuthHeader = () =>
   (instance.defaults.headers.common.Authorization = "");
 
 export const register = createAsyncThunk(
@@ -17,7 +17,7 @@ export const register = createAsyncThunk(
   async (formData, thunkApi) => {
     try {
       const { data } = await instance.post("/users/signup", formData);
-      setToken(data.token);
+      setAuthHeader(data.token);
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -30,7 +30,7 @@ export const login = createAsyncThunk(
   async (formData, thunkApi) => {
     try {
       const { data } = await instance.post("/users/login", formData);
-      setToken(data.token);
+      setAuthHeader(data.token);
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
@@ -38,29 +38,26 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (formData, thunkApi) => {
-    try {
-      const { data } = await instance.post("/users/logout", formData);
-      setToken(data.token);
-      return data;
-    } catch (error) {
-      return thunkApi.rejectWithValue(error.message);
-    }
+export const logout = createAsyncThunk("auth/logout", async (_, thunkApi) => {
+  try {
+    await instance.post("/users/logout");
+    clearAuthHeader();
+  } catch (error) {
+    return thunkApi.rejectWithValue(error.message);
   }
-);
+});
 
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkApi) => {
+    const state = thunkApi.getState();
+    const token = state.auth.token;
+    if (token === null) {
+      return thunkApi.rejectWithValue("Token is missing");
+    }
     try {
-      const state = thunkApi.getState();
-      const token = state.auth.token;
-
-      setToken(token);
+      setAuthHeader(token);
       const { data } = await instance.get("/users/current");
-
       return data;
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
